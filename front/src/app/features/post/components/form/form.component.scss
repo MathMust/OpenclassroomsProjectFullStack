@@ -1,0 +1,58 @@
+.register-container {
+    width: 100%;
+    padding: 20px;
+}
+
+.register-form {
+    width: 100%;
+    max-width: 300px;
+}
+
+.btn-width {
+    width: 40%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+label {
+    margin-bottom: 16px;
+}
+
+input,
+select {
+    height: 30px;
+    border: solid 1.5px;
+    border-radius: 5px;
+    border-color: #673ab7;
+}
+
+textarea {
+    border: solid 1.5px;
+    border-radius: 5px;
+    border-color: #673ab7;
+    resize: none;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline-color: #673ab7;
+}
+
+.error {
+    color: #f44336;
+    font-size: 9px;
+    line-height: normal;
+    margin-top: 2px;
+}
+
+.color-grey {
+    color: rgb(118, 118, 118);
+}
+
+option {
+    color: black;
+}

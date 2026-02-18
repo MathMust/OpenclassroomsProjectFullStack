@@ -1,0 +1,31 @@
+<app-back-button></app-back-button>
+<div class="login-container" fxLayout="column" fxLayoutAlign="center center">
+    <h2>Se connecter</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+        <label fxLayout="column">
+            E-mail ou nom d'utilisateur
+            <input type="text" formControlName="identifier">
+            <small class="error"
+                *ngIf="form.get('identifier')?.touched && form.get('identifier')?.errors?.['required']">
+                L'e-mail ou le nom d'utilisateur est obligatoire.
+            </small>
+        </label>
+
+        <label fxLayout="column">
+            Mot de passe
+            <input type="password" formControlName="password">
+            <small class="error" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">
+                Le mot de passe est obligatoire.
+            </small>
+        </label>
+
+        <div fxLayoutAlign="center center">
+            <button mat-raised-button color="primary" type="submit" class="btn-width" [disabled]="!form.valid">
+                Se connecter
+            </button>
+        </div>
+    </form>
+    <div class="error-message" *ngIf="onError">
+        {{ errorMessage }}
+    </div>
+</div>

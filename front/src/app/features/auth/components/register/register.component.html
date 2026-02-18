@@ -1,0 +1,48 @@
+<app-back-button></app-back-button>
+<div class="register-container" fxLayout="column" fxLayoutAlign="center center">
+    <h2>Inscription</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
+        <label fxLayout="column">
+            Nom d'utilisateur
+            <input type="text" formControlName="name">
+            <small class="error" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['required']">
+                Le nom d'utilisateur est obligatoire.
+            </small>
+            <small class="error" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['error']">
+                {{ form.get('name')?.errors?.['error'] }}
+            </small>
+        </label>
+
+        <label fxLayout="column">
+            Adresse e-mail
+            <input type="email" formControlName="email">
+            <small class="error" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']">
+                L'adresse e-mail n'est pas valide.
+            </small>
+            <small class="error" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']">
+                L'adresse e-mail est obligatoire.
+            </small>
+            <small class="error" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['error']">
+                {{ form.get('email')?.errors?.['error'] }}
+            </small>
+        </label>
+
+        <label fxLayout="column">
+            Mot de passe
+            <input type="password" formControlName="password">
+            <small class="error" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['pattern']">
+                Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.
+            </small>
+
+            <small class="error" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">
+                Le mot de passe est obligatoire.
+            </small>
+        </label>
+
+        <div fxLayoutAlign="center center">
+            <button mat-raised-button color="primary" type="submit" class="btn-width" [disabled]="!form.valid">
+                S'inscrire
+            </button>
+        </div>
+    </form>
+</div>

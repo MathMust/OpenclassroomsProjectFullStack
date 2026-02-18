@@ -1,0 +1,61 @@
+<div class="me-container" fxLayout="column" fxLayoutAlign="center center">
+  <h2>Profil utilisateur</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="me-form">
+    <label fxLayout="column">
+      <input type="text" formControlName="name" placeholder="Nom d'utilisateur">
+      <small class="error" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['required']">
+        Le nom d'utilisateur est obligatoire.
+      </small>
+      <small class="error" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['error']">
+        {{ form.get('name')?.errors?.['error'] }}
+      </small>
+    </label>
+
+    <label fxLayout="column">
+      <input type="email" formControlName="email" placeholder="email">
+      <small class="error" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']">
+        L'adresse e-mail n'est pas valide.
+      </small>
+      <small class="error" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']">
+        L'adresse e-mail est obligatoire.
+      </small>
+      <small class="error" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['error']">
+        {{ form.get('email')?.errors?.['error'] }}
+      </small>
+    </label>
+
+    <label fxLayout="column">
+      <input type="password" formControlName="password" placeholder="Mot de passe">
+      <small class="error" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['pattern']">
+        Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.
+      </small>
+
+      <small class="error" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">
+        Le mot de passe est obligatoire.
+      </small>
+    </label>
+
+    <div fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" type="submit" class="btn-width" [disabled]="!form.valid">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+  <mat-divider></mat-divider>
+  <h2>Abonnements</h2>
+  <div class="container" fxLayout="column" fxLayoutGap="20px">
+    <div fxLayout="row wrap" class="topics-container">
+      <div *ngFor="let topic of topics" fxFlex="0 1 calc(50% - 20px)" fxFlex.xs="100%" class="card">
+        <h3>{{ topic.title }}</h3>
+        <p>
+          {{ topic.description }}
+        </p>
+        <div fxLayoutAlign="center center">
+          <button mat-raised-button class="btn-unsubscribe" (click)="unSubscription(topic)">
+            Déjà abonné
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+.app-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    padding: 0 24px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.app-header .logo img {
+    height: 80px;
+    position: relative;
+    top: 10px;
+}
+
+.app-header button {
+    font-size: 20px;
+}
+
+.profile-btn {
+    height: 60px;
+    width: 60px;
+}
+
+.profile-btn mat-icon {
+    font-size: 60px;
+    line-height: 60px;
+    height: 60px;
+    width: 60px;
+}
+
+button.mat-menu-item {
+    text-align: right !important;
+    font-size: 18px;
+}
+
+.mat-menu-item .mat-icon {
+    font-size: 40px;
+    line-height: 40px;
+    height: 40px;
+    width: 40px;
+    margin-right: 0;
+}
+
+.color-red {
+    color: #f44336;
+}
+
+.active-link {
+    color: #673ab7;
+}
+
+.active-link mat-icon {
+    color: #673ab7 !important;
+}

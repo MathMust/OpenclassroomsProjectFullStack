@@ -1,0 +1,32 @@
+<header class="app-header" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+  <!-- Logo -->
+  <div class="logo" fxFlex="none">
+    <img src="/assets/logo_p6.png" alt="Logo" />
+  </div>
+
+  <!-- Desktop Menu -->
+  <nav fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="16px" fxHide.lt-md *ngIf="sessionService.isLogged">
+    <button mat-button color="warn" (click)="logout()">Se déconnecter</button>
+    <button mat-button routerLink="/posts" routerLinkActive="active-link">Articles</button>
+    <button mat-button routerLink="/topics" routerLinkActive="active-link">Thèmes</button>
+    <button mat-icon-button routerLink="/me" matTooltip="Mon profil" class="profile-btn" routerLinkActive="active-link">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <button mat-icon-button [matMenuTriggerFor]="mobileMenu" fxShow="true" fxShow.gt-sm="false"
+    *ngIf="sessionService.isLogged">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #mobileMenu="matMenu">
+    <button mat-menu-item class="color-red" (click)="logout()">Se déconnecter</button>
+    <button mat-menu-item routerLink="/posts" routerLinkActive="active-link">Articles</button>
+    <button mat-menu-item routerLink="/topics" routerLinkActive="active-link">Thèmes</button>
+    <button mat-menu-item routerLink="/me" routerLinkActive="active-link">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </mat-menu>
+</header>
+<hr />

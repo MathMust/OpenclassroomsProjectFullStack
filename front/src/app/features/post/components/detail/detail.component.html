@@ -1,0 +1,53 @@
+<app-back-button></app-back-button>
+
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+
+    <h1>{{ post.title }}</h1>
+
+    <div class="post" fxLayout="row wrap" fxLayout.xs="row wrap">
+
+        <div fxFlex="20%" fxFlex.xs="50%" [ngClass]="{'mobile-margin': isMobile()}">
+            {{ post.date | date:'dd/MM/yyyy' }}
+        </div>
+
+        <div fxFlex="20%" fxFlex.xs="50%">
+            {{ post.authorName }}
+        </div>
+
+        <div fxFlex="20%" fxFlex.xs="100%">
+            {{ post.topicTitle }}
+        </div>
+
+    </div>
+
+    <div class="post">
+        {{ post.content }}
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="comment" fxLayout="column">
+        <div fxLayout="row" class="mb-20">Commentaires</div>
+
+        <div *ngFor="let comment of post.comments" [ngClass]="{'ml-50': !isMobile()}" fxLayout="row wrap">
+            <div fxFlex="20%" fxFlex.xs="100%" [ngClass]="{'text-align-right': isMobile()}">
+                {{ comment.userName }}
+            </div>
+            <div fxFlex="60%" fxFlex.xs="100%" class="content mb-20">
+                {{ comment.content }}
+            </div>
+        </div>
+
+        <form fxLayout="row" [formGroup]="form" (ngSubmit)="submit()" fxLayoutAlign="start center" fxFlex="80%"
+            fxFlex.xs="100%" [ngClass]="{'ml-50': !isMobile()}">
+            <textarea type="text" formControlName="content" placeholder="Ecrivez ici votre commentaire"
+                rows="5"></textarea>
+            <div fxFlex="10%" fxLayout="row" fxLayoutAlign="center center" [ngClass]="{'ml-20': isMobile()}">
+                <button mat-icon-button type="submit" class="send-btn" [disabled]="!form.valid">
+                    <mat-icon class="big-icon">send</mat-icon>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
