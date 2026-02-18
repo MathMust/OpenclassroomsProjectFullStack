@@ -9,6 +9,7 @@ import com.openclassrooms.mddapi.model.Post;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.CommentRepository;
 import com.openclassrooms.mddapi.repository.PostRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,9 @@ public class CommentService {
     }
 
     public CommentsResponse getAll() {
-        List<Comment> comments = commentRepository.findAll();
+        List<Comment> comments = commentRepository.findAll(
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
         List<CommentDto> commentDtos = commentMapper.commentListToCommentDtoList(comments);
         CommentsResponse commentsResponse = new CommentsResponse();
         commentsResponse.setComments(commentDtos);

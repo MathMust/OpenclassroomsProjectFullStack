@@ -17,7 +17,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create (@ModelAttribute PostRequest request, Authentication authentication) {
+    public ResponseEntity<?> create (@RequestBody PostRequest request, Authentication authentication) {
             postService.create(request, authentication);
             return ResponseEntity.ok().body("Post created !");
     }

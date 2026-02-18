@@ -3,7 +3,9 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.constants.Constants;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
@@ -21,13 +23,19 @@ public class UserService {
 
     public void checkEmailNotUsed(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    Constants.EMAIL + Constants.COLON_SEPARATOR + Constants.EMAIL_USED
+            );
         }
     }
 
     public void checkNameNotUsed(String name) {
         if (userRepository.findByName(name).isPresent()) {
-            throw new IllegalArgumentException("Name already exists");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    Constants.NAME + Constants.COLON_SEPARATOR + Constants.NAME_USED
+            );
         }
     }
 

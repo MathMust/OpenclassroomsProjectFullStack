@@ -7,10 +7,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = CommentMapper.class)
 public interface PostMapper {
 
     @Mapping(target = "authorName", source = "author.name")
+    @Mapping(target = "topicTitle", source = "topic.title")
+    @Mapping(target = "comments", source = "comments")
     PostDto postToPostDto(Post post);
 
     List<PostDto> postListToPostDtoList(List<Post> post);

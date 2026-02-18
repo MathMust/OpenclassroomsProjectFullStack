@@ -1,10 +1,10 @@
 package com.openclassrooms.mddapi.dto;
 
-import com.openclassrooms.mddapi.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -15,4 +15,6 @@ public class PostDto {
     private String title;
     private String content;
     private String authorName;
+    private String topicTitle;
+    private List<CommentDto> comments;
 }
