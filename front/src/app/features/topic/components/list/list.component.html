@@ -1,0 +1,26 @@
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+
+    <!-- Liste de thèmes -->
+    <div fxLayout="row wrap" class="topics-container">
+
+        <div *ngFor="let topic of (topics$ | async)?.topics" fxFlex="0 1 calc(50% - 20px)" fxFlex.xs="100%"
+            class="card">
+
+            <h2>{{ topic.title }}</h2>
+
+            <p>
+                {{ topic.description }}
+            </p>
+
+            <div fxLayoutAlign="center center">
+                <button mat-raised-button [ngClass]="topic.subscription ? 'btn-unsubscribe' : 'btn-subscribe'"
+                    (click)="toggleSubscription(topic)">
+                    {{ topic.subscription ? 'Déjà abonné' : "S'abonner" }}
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

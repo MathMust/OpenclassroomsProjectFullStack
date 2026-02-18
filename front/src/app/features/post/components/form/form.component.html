@@ -1,0 +1,37 @@
+<app-back-button></app-back-button>
+<div class="register-container" fxLayout="column" fxLayoutAlign="center center">
+    <h2>Créer un nouvel article</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
+        <label fxLayout="column">
+            <select formControlName="topicId" [ngClass]="{'color-grey': !form.get('topicId')?.value}">
+                <option [ngValue]="null" disabled selected hidden>Sélectionner un thème</option>
+                <option *ngFor="let topic of options" [ngValue]="topic.id">
+                    {{ topic.title }}
+                </option>
+            </select>
+            <small class="error" *ngIf="form.get('topic')?.touched && form.get('topic')?.errors?.['required']">
+                Le thème est obligatoire.
+            </small>
+        </label>
+
+        <label fxLayout="column">
+            <input type="text" formControlName="title" placeholder="Titre de l'article">
+            <small class="error" *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['required']">
+                Le titre de l'article est obligatoire.
+            </small>
+        </label>
+
+        <label fxLayout="column">
+            <textarea type="text" formControlName="content" placeholder="Contenu de l'article" rows="10"></textarea>
+            <small class="error" *ngIf="form.get('content')?.touched && form.get('content')?.errors?.['required']">
+                Le contenu de l'article est obligatoire.
+            </small>
+        </label>
+
+        <div fxLayoutAlign="center center">
+            <button mat-raised-button color="primary" type="submit" class="btn-width" [disabled]="!form.valid">
+                Créer
+            </button>
+        </div>
+    </form>
+</div>

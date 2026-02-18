@@ -1,0 +1,31 @@
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.sort {
+    font-weight: bold;
+}
+
+.card {
+    background: #F5F5F5;
+    padding: 10px 20px !important;
+    border-radius: 8px;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.meta {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.posts-container {
+    margin: 0 -10px;
+}
+
+.ml-90 {
+    margin-left: 90px;
+}

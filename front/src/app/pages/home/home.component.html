@@ -1,5 +1,7 @@
-<div class="center">
-  <img src="/assets/logo_p6.png" alt="logo" />
-  <h1>Welcome to MDD</h1>
-  <button mat-raised-button color="primary" (click)="start()">Commencer</button>
+<div class="center" fxFlex="100%" style="display:flex; justify-content:center;">
+  <img src="/assets/logo_p6.png" alt="logo" style="max-width:100%; height:auto;display: block;" />
+  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px">
+    <button mat-stroked-button color="basic" (click)="goLogin()">Se connecter</button>
+    <button mat-stroked-button color="basic" (click)="goRegister()">S'inscrire</button>
+  </div>
 </div>

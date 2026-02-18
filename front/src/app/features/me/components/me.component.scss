@@ -1,0 +1,82 @@
+.me-container {
+    width: 100%;
+    padding: 20px;
+}
+
+.me-form {
+    width: 100%;
+    max-width: 300px;
+}
+
+.btn-width {
+    width: 40%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+label {
+    margin-bottom: 16px;
+}
+
+.error {
+    color: #f44336;
+    font-size: 9px;
+    line-height: normal;
+    margin-top: 2px;
+}
+
+input {
+    height: 30px;
+    border: solid 1.5px;
+    border-radius: 5px;
+    border-color: #673ab7;
+}
+
+input:focus-visible {
+    outline-color: #673ab7;
+}
+
+.topics-container {
+    margin: 0 -10px;
+}
+
+.card {
+    background: #F5F5F5;
+    padding: 10px 20px !important;
+    border-radius: 8px;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+mat-divider {
+    margin: 20px 0;
+    width: 90%;
+    border-top-width: 2px;
+    border-top-color: black;
+}
+
+h3 {
+    font-weight: 500;
+}
+
+.btn-subscribe {
+    background-color: #673ab7;
+    color: white;
+}
+
+.btn-unsubscribe {
+    background-color: grey;
+    color: white;
+}
+
+button {
+    width: 33%;
+}
+
+.container {
+    max-width: 1200px;
+    padding-top: 20px;
+}

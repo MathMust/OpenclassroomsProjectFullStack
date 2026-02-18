@@ -1,0 +1,35 @@
+.register-container {
+    width: 100%;
+    padding: 20px;
+}
+
+.register-form {
+    width: 100%;
+    max-width: 300px;
+}
+
+.btn-width {
+    width: 40%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+label {
+    margin-bottom: 16px;
+}
+
+input {
+    height: 30px;
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.error {
+    color: #f44336;
+    font-size: 9px;
+    line-height: normal;
+    margin-top: 2px;
+}

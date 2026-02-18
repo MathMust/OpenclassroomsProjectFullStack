@@ -1,0 +1,88 @@
+.container {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.card {
+    background: #F5F5F5;
+    padding: 10px 20px !important;
+    border-radius: 8px;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+h1 {
+    flex: 1;
+    margin: 0;
+}
+
+button[mat-icon-button] {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+}
+
+.ml-90 {
+    margin-left: 90px;
+}
+
+.post,
+.comment {
+    font-size: 1rem;
+}
+
+mat-divider {
+    margin: 20px 0;
+    width: 100%;
+    border-top-width: 2px;
+    border-top-color: black;
+}
+
+.mobile-margin {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.ml-50 {
+    margin-left: 50px;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.content {
+    background-color: #EEEEEE;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+textarea {
+    padding: 15px;
+    border-radius: 20px;
+    width: 77.5%;
+    font-size: 1rem;
+}
+
+.big-icon {
+    font-size: 50px !important;
+    width: 50px !important;
+    height: 50px !important;
+    line-height: 50px !important;
+}
+
+.send-btn {
+    width: 50px !important;
+    height: 50px !important;
+    line-height: 50px !important;
+    color: #673ab7;
+    transform: rotate(-45deg);
+}

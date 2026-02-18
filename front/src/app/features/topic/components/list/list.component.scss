@@ -1,0 +1,31 @@
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.card {
+    background: #F5F5F5;
+    padding: 10px 20px !important;
+    border-radius: 8px;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.topics-container {
+    margin: 0 -10px;
+}
+
+.btn-subscribe {
+    background-color: #673ab7;
+    color: white;
+}
+
+.btn-unsubscribe {
+    background-color: grey;
+    color: white;
+}
+
+button {
+    width: 33%;
+}
