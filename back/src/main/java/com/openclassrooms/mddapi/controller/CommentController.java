@@ -17,7 +17,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create (@ModelAttribute CommentRequest request, Authentication authentication) {
+    public ResponseEntity<?> create (@RequestBody CommentRequest request, Authentication authentication) {
         commentService.create(request, authentication);
             return ResponseEntity.ok().body("Comment created !");
     }

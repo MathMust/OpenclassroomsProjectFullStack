@@ -42,6 +42,7 @@ public class Post {
     private Topic topic;
 
     @OneToMany(mappedBy = "post")
+    @OrderBy("createdAt DESC")
     private List<Comment> comments;
 
     @CreatedDate

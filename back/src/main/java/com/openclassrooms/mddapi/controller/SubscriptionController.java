@@ -15,7 +15,7 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
-    @PostMapping("/{id}/subscribe")
+    @GetMapping("/{id}/subscribe")
     public ResponseEntity<?> subscribe(@PathVariable Integer id, Authentication authentication) {
         subscriptionService.subscribe(authentication, id);
         return ResponseEntity.ok().body("Subscription completed !");

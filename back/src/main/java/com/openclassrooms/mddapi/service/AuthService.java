@@ -6,6 +6,7 @@ import com.openclassrooms.mddapi.dto.RegisterRequest;
 import com.openclassrooms.mddapi.dto.TopicDto;
 import com.openclassrooms.mddapi.dto.UserResponse;
 import com.openclassrooms.mddapi.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -52,8 +54,8 @@ public class AuthService {
     }
 
     public String register(RegisterRequest request) {
-        userService.checkEmailNotUsed(request.getEmail());
         userService.checkNameNotUsed(request.getName());
+        userService.checkEmailNotUsed(request.getEmail());
 
         User user = new User();
         user.setName(request.getName());
@@ -81,7 +83,10 @@ public class AuthService {
         User user = userService.getByEmailOrName(request.getIdentifier());
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException(Constants.INVALID_CREDENTIALS);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    Constants.INVALID_CREDENTIALS
+            );
         }
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
