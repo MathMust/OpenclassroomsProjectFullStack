@@ -16,14 +16,35 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Gestionnaire global des exceptions de l’application.
+ *
+ * <p>
+ * Centralise le traitement des erreurs afin de :
+ * <ul>
+ *     <li>Standardiser les réponses JSON via {@link ErrorResponse}</li>
+ *     <li>Retourner des codes HTTP cohérents</li>
+ *     <li>Journaliser les erreurs selon leur niveau de criticité</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Intercepte les exceptions métier, de validation, d’authentification,
+ * d’autorisation et les erreurs techniques non prévues.
+ * </p>
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /** Logger applicatif. */
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // -------------------------
-    // Erreurs métiers spécifiques (ex: email déjà utilisé)
-    // -------------------------
+    /**
+     * Gère les erreurs métier simples.
+     *
+     * @param ex exception levée
+     * @return réponse HTTP 400
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
         logger.debug("Handled IllegalArgumentException: {}", ex.getMessage());
@@ -32,6 +53,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage()));
     }
 
+    /**
+     * Gère les exceptions contenant déjà un statut HTTP.
+     *
+     * @param ex exception Spring avec statut intégré
+     * @return réponse HTTP correspondante
+     */
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorResponse> handleResponseStatus(ResponseStatusException ex) {
         logger.debug("Handled ResponseStatusException: {}", ex.getReason());
@@ -40,9 +67,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getReason()));
     }
 
-    // -------------------------
-    // Validation @Valid
-    // -------------------------
+    /**
+     * Gère les erreurs de validation liées à {@code @Valid}.
+     *
+     * @param ex exception de validation
+     * @return réponse HTTP 400 avec détail des champs invalides
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
@@ -57,9 +87,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(message));
     }
 
-    // -------------------------
-    // Erreurs IO (upload, fichiers)
-    // -------------------------
+    /**
+     * Gère les erreurs liées aux opérations IO (upload, fichiers).
+     *
+     * @param ex exception IO
+     * @return réponse HTTP 500
+     */
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorResponse> handleIOException(IOException ex) {
         logger.error("IO Exception: ", ex);
@@ -68,9 +101,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("IO error: " + ex.getMessage()));
     }
 
-    // -------------------------
-    // Authentification / JWT
-    // -------------------------
+    /**
+     * Gère les erreurs d’authentification (JWT invalide, credentials incorrects).
+     *
+     * @param ex exception d’authentification
+     * @return réponse HTTP 401
+     */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthentication(AuthenticationException ex) {
         logger.debug("Authentication failed: {}", ex.getMessage());
@@ -79,9 +115,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("Authentication failed: " + ex.getMessage()));
     }
 
-    // -------------------------
-    // Autorisation (403)
-    // -------------------------
+    /**
+     * Gère les erreurs d’autorisation (accès interdit).
+     *
+     * @param ex exception d’accès refusé
+     * @return réponse HTTP 403
+     */
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
         logger.debug("Access denied: {}", ex.getMessage());
@@ -90,9 +129,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("Access denied: " + ex.getMessage()));
     }
 
-    // -------------------------
-    // Catch-all pour toutes les autres exceptions
-    // -------------------------
+    /**
+     * Gestion générique pour toute exception non prévue.
+     *
+     * @param ex exception inattendue
+     * @return réponse HTTP 500
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAll(Exception ex) {
         logger.error("Unhandled exception: ", ex);

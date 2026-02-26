@@ -14,6 +14,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service métier responsable de la gestion des publications (posts).
+ *
+ * <p>
+ * Gère :
+ * <ul>
+ *     <li>La création d’un post associé à un utilisateur et à un topic</li>
+ *     <li>La récupération de tous les posts</li>
+ *     <li>La récupération d’un post spécifique par son identifiant</li>
+ * </ul>
+ * </p>
+ */
 @Service
 public class PostService {
 
@@ -22,6 +34,9 @@ public class PostService {
     private final UserService userService;
     private final PostRepository postRepository;
 
+    /**
+     * Constructeur avec injection des dépendances.
+     */
     public PostService(TopicService topicService, PostMapper postMapper, UserService userService, PostRepository postRepository) {
         this.topicService = topicService;
         this.postMapper = postMapper;
@@ -29,6 +44,12 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    /**
+     * Crée un nouveau post pour l’utilisateur authentifié et le topic spécifié.
+     *
+     * @param request données du post
+     * @param authentication utilisateur actuellement authentifié
+     */
     public void create(PostRequest request, Authentication authentication) {
         String email = authentication.getName();
         User user = userService.getByEmail(email);
@@ -46,6 +67,11 @@ public class PostService {
         postRepository.save(post);
     }
 
+    /**
+     * Retourne tous les posts.
+     *
+     * @return {@link PostsResponse} contenant la liste des posts
+     */
     public PostsResponse getAll() {
         List<Post> posts = postRepository.findAll();
         List<PostDto> postDtos = postMapper.postListToPostDtoList(posts);
@@ -55,6 +81,13 @@ public class PostService {
         return postsResponse;
     }
 
+    /**
+     * Retourne un post spécifique par son identifiant.
+     *
+     * @param id identifiant du post
+     * @return {@link PostDto} correspondant
+     * @throws IllegalArgumentException si le post n’existe pas
+     */
     public PostDto getById(Integer id) {
         Optional<Post> post = postRepository.findById(id);
         if (post.isPresent()) {

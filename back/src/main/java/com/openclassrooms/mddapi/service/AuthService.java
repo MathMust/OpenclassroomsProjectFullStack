@@ -26,6 +26,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Service métier responsable de l’authentification et de la gestion
+ * du compte utilisateur.
+ *
+ * <p>
+ * Gère :
+ * <ul>
+ *     <li>La génération des JWT</li>
+ *     <li>L’inscription et la connexion</li>
+ *     <li>La récupération du profil utilisateur</li>
+ *     <li>La mise à jour du compte</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Authentification basée sur JWT signé en HS256 avec expiration à 24h.
+ * </p>
+ */
 @Service
 public class AuthService {
 
@@ -34,6 +52,9 @@ public class AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final TopicService topicService;
 
+    /**
+     * Constructeur avec injection des dépendances.
+     */
     public AuthService(JwtEncoder jwtEncoder, UserService userService, BCryptPasswordEncoder passwordEncoder, TopicService topicService) {
         this.jwtEncoder = jwtEncoder;
         this.userService = userService;
@@ -41,6 +62,12 @@ public class AuthService {
         this.topicService = topicService;
     }
 
+    /**
+     * Génère un JWT pour l’utilisateur authentifié.
+     *
+     * @param authentication contexte d’authentification
+     * @return token JWT signé
+     */
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -53,6 +80,12 @@ public class AuthService {
         return this.jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
     }
 
+    /**
+     * Inscrit un nouvel utilisateur et retourne un JWT.
+     *
+     * @param request données d’inscription
+     * @return token JWT
+     */
     public String register(RegisterRequest request) {
         userService.checkNameNotUsed(request.getName());
         userService.checkEmailNotUsed(request.getEmail());
@@ -79,6 +112,12 @@ public class AuthService {
         return generateToken(authentication);
     }
 
+    /**
+     * Authentifie un utilisateur existant et retourne un JWT.
+     *
+     * @param request données de connexion
+     * @return token JWT
+     */
     public String login(LoginRequest request) {
         User user = userService.getByEmailOrName(request.getIdentifier());
 
@@ -104,6 +143,12 @@ public class AuthService {
         return generateToken(authentication);
     }
 
+    /**
+     * Retourne les informations du profil utilisateur authentifié.
+     *
+     * @param authentication contexte d’authentification courant
+     * @return données utilisateur enrichies (topics inclus)
+     */
     public UserResponse me(Authentication authentication) {
 
         User user = userService.getByEmail(authentication.getName());
@@ -120,6 +165,13 @@ public class AuthService {
         return userResponse;
     }
 
+    /**
+     * Met à jour les informations du compte utilisateur et génère un nouveau JWT.
+     *
+     * @param request nouvelles données utilisateur
+     * @param authentication utilisateur authentifié
+     * @return nouveau token JWT
+     */
     public String update(RegisterRequest request, Authentication authentication) {
         User user = userService.getByEmail(authentication.getName());
 

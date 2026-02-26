@@ -25,29 +25,59 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Configuration centrale de Spring Security.
+ *
+ * <p>
+ * Configure :
+ * <ul>
+ *     <li>La sécurité HTTP (stateless + JWT)</li>
+ *     <li>Les endpoints publics et protégés</li>
+ *     <li>La gestion des erreurs d’authentification</li>
+ *     <li>L’encodage des mots de passe (BCrypt)</li>
+ *     <li>L’encodage/décodage des JWT (HS256)</li>
+ *     <li>La gestion des rôles via le claim "roles"</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Application basée sur une authentification JWT sans session serveur.
+ * </p>
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig implements WebMvcConfigurer {
 
+    /** Clé secrète utilisée pour signer et vérifier les JWT. */
     @Value("${jwt.secret}")
     private String jwtKey;
 
+    /** Point d’entrée personnalisé pour les accès non authentifiés. */
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
+    /**
+     * Constructeur avec injection du point d’entrée d’authentification.
+     *
+     * @param authenticationEntryPoint gestionnaire des erreurs 401
+     */
     public SpringSecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint) {
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get("uploads");
-        String uploadPath = uploadDir.toFile().getAbsolutePath();
-
-        // Lie les URLs /uploads/** au dossier local "uploads"
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadPath + "/");
-    }
-
+    /**
+     * Configure la chaîne de filtres Spring Security :
+     * <ul>
+     *     <li>Désactivation CSRF</li>
+     *     <li>Session stateless</li>
+     *     <li>Endpoints publics : /api/auth/register, /api/auth/login</li>
+     *     <li>Protection de toutes les autres routes</li>
+     *     <li>Support JWT en tant que Resource Server</li>
+     * </ul>
+     *
+     * @param http configuration HTTP
+     * @return SecurityFilterChain configurée
+     * @throws Exception en cas d’erreur de configuration
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -64,23 +94,44 @@ public class SpringSecurityConfig implements WebMvcConfigurer {
                 .build();
     }
 
+    /**
+     * Bean responsable de la signature des JWT.
+     *
+     * @return encodeur JWT basé sur une clé secrète HS256
+     */
     @Bean
     public JwtEncoder jwtEncoder() {
         return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes()));
     }
 
+    /**
+     * Bean responsable de la validation des JWT.
+     *
+     * @return décodeur JWT configuré en HS256
+     */
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
     }
 
-
+    /**
+     * Encodeur de mots de passe basé sur BCrypt.
+     *
+     * @return instance BCryptPasswordEncoder
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configure la conversion des claims JWT en autorités Spring Security.
+     *
+     * <p>Utilise le claim "roles" avec le préfixe "ROLE_".</p>
+     *
+     * @return convertisseur JWT personnalisé
+     */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();

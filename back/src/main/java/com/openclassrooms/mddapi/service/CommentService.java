@@ -16,6 +16,17 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Service métier responsable de la gestion des commentaires.
+ *
+ * <p>
+ * Gère :
+ * <ul>
+ *     <li>La création d’un commentaire</li>
+ *     <li>La récupération des commentaires triés par date</li>
+ * </ul>
+ * </p>
+ */
 @Service
 public class CommentService {
 
@@ -24,6 +35,9 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
+    /**
+     * Constructeur avec injection des dépendances.
+     */
     public CommentService(CommentMapper commentMapper, UserService userService, PostRepository postRepository, CommentRepository commentRepository) {
         this.commentMapper = commentMapper;
         this.userService = userService;
@@ -31,6 +45,12 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    /**
+     * Crée un nouveau commentaire associé à un post et à l’utilisateur authentifié.
+     *
+     * @param request données du commentaire
+     * @param authentication utilisateur actuellement authentifié
+     */
     public void create(CommentRequest request, Authentication authentication) {
         String email = authentication.getName();
         User user = userService.getByEmail(email);
@@ -47,6 +67,11 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    /**
+     * Retourne la liste des commentaires triés par date décroissante.
+     *
+     * @return objet {@link CommentsResponse} contenant les commentaires
+     */
     public CommentsResponse getAll() {
         List<Comment> comments = commentRepository.findAll(
                 Sort.by(Sort.Direction.DESC, "createdAt")
