@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MeRoutingModule } from './me-routing.module';
 import { MeComponent } from './components/me.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 registerLocaleData(localeFr);
 
 const materialModules = [
@@ -21,7 +22,8 @@ const materialModules = [
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatDividerModule
+  MatDividerModule,
+  MatSnackBarModule
 ]
 
 @NgModule({
