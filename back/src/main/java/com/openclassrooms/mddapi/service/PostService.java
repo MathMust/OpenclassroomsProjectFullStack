@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.constants.Constants;
 import com.openclassrooms.mddapi.dto.*;
 import com.openclassrooms.mddapi.mapper.PostMapper;
 import com.openclassrooms.mddapi.model.Post;
+import com.openclassrooms.mddapi.model.Subscription;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.PostRepository;
@@ -11,7 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -68,12 +71,25 @@ public class PostService {
     }
 
     /**
-     * Retourne tous les posts.
+     * Retourne tous les posts lié aux thèmes abonnés.
      *
+     * @param authentication utilisateur actuellement authentifié
      * @return {@link PostsResponse} contenant la liste des posts
      */
-    public PostsResponse getAll() {
-        List<Post> posts = postRepository.findAll();
+    public PostsResponse getAll(Authentication authentication) {
+        String email = authentication.getName();
+        User user = userService.getByEmail(email);
+
+        List<Integer> subscribedTopicIds = Optional.ofNullable(user.getSubscriptions())
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map(Subscription::getTopic)
+                        .filter(Objects::nonNull)
+                        .map(Topic::getId)
+                        .filter(Objects::nonNull)
+                        .toList();
+
+        List<Post> posts = postRepository.findAllByTopicIdIn(subscribedTopicIds);
         List<PostDto> postDtos = postMapper.postListToPostDtoList(posts);
         PostsResponse postsResponse = new PostsResponse();
         postsResponse.setPosts(postDtos);

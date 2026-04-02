@@ -53,8 +53,8 @@ public class PostController {
      * @return liste des publications
      */
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(postService.getAll());
+    public ResponseEntity<?> getAll(Authentication authentication) {
+        return ResponseEntity.ok(postService.getAll(authentication));
     }
 
     /**

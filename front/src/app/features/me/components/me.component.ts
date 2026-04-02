@@ -8,6 +8,7 @@ import { AuthSuccess } from '../../auth/interfaces/authSuccess.interface';
 import { SessionService } from 'src/app/services/session.service';
 import { TopicDto } from '../../topic/interfaces/topicDto.interface';
 import { TopicService } from '../../topic/services/topic.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-me',
@@ -39,7 +40,8 @@ export class MeComponent implements OnInit {
     private meService: MeService,
     private fb: FormBuilder,
     private sessionService: SessionService,
-    private topicService: TopicService
+    private topicService: TopicService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +72,13 @@ export class MeComponent implements OnInit {
         localStorage.setItem('token', response.token);
         this.meService.me().pipe(takeUntil(this.destroy$)).subscribe((user: User) => {
           this.sessionService.logIn(user);
+        });
+
+        this.snackBar.open('Profil mis à jour', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
         });
       },
       error: (err) => {
